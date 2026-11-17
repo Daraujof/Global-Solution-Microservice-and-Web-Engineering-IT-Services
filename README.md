@@ -14,9 +14,9 @@ Global Solution 2026 · FIAP · **Microservice and Web Engineering & IT Services
 
 | Evidência | Link |
 |---|---|
-| API no Azure (Swagger na raiz) | __AZURE_URL__ |
-| Imagem no Docker Hub | https://hub.docker.com/r/__DOCKER_USER__/to-no-direito-api |
-| Workflow (GitHub Actions) | https://github.com/Enzo-Miletta/to-no-direito-api/actions |
+| API no Azure (Swagger na raiz) | https://tonodireito-api-9dd995.azurewebsites.net |
+| Imagem no Docker Hub | https://hub.docker.com/r/dudinhaaraujoo/to-no-direito-api |
+| Workflow (GitHub Actions) | https://github.com/Daraujof/Global-Solution-Microservice-and-Web-Engineering-IT-Services/actions |
 
 ## 1. Objetivo da solução
 
@@ -135,13 +135,13 @@ docker run -d --name api --network tnd -p 8080:8080 \
 
 ## 5. Docker Hub
 
-- Repositório: **https://hub.docker.com/r/__DOCKER_USER__/to-no-direito-api**
-- Imagem: `__DOCKER_USER__/to-no-direito-api`
+- Repositório: **https://hub.docker.com/r/dudinhaaraujoo/to-no-direito-api**
+- Imagem: `dudinhaaraujoo/to-no-direito-api`
 - Tags: `latest`, `1.0.<nº da execução do workflow>` e `sha-<commit>`
 
 ```bash
-docker pull __DOCKER_USER__/to-no-direito-api:latest
-docker run -p 8080:8080 -e DB_URL=... -e DB_USERNAME=... -e DB_PASSWORD=... __DOCKER_USER__/to-no-direito-api:latest
+docker pull dudinhaaraujoo/to-no-direito-api:latest
+docker run -p 8080:8080 -e DB_URL=... -e DB_USERNAME=... -e DB_PASSWORD=... dudinhaaraujoo/to-no-direito-api:latest
 ```
 
 ## 6. Continuous Delivery (GitHub Actions)
@@ -153,19 +153,19 @@ Workflow: [`.github/workflows/cd-dockerhub.yml`](.github/workflows/cd-dockerhub.
 3. Login no Docker Hub com os secrets `DOCKERHUB_USERNAME` e `DOCKERHUB_TOKEN`
 4. Build da imagem (Dockerfile multi-stage) e push com as tags `latest`, `1.0.N` e `sha-xxxxxxx`
 
-Histórico de execuções: https://github.com/Enzo-Miletta/to-no-direito-api/actions
+Histórico de execuções: https://github.com/Daraujof/Global-Solution-Microservice-and-Web-Engineering-IT-Services/actions
 
 ## 7. Implantação no Azure
 
-- **Azure App Service for Containers** (Linux, plano B1) rodando a imagem `__DOCKER_USER__/to-no-direito-api:latest` do Docker Hub
+- **Azure App Service for Containers** (Linux, plano B1) rodando a imagem `dudinhaaraujoo/to-no-direito-api:latest` do Docker Hub
 - **Azure SQL Database** (Microsoft SQL Server, banco `tonodireito`), com firewall liberado para serviços do Azure
 - Conexão via App Settings `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` (não versionadas) e `WEBSITES_PORT=8080`
 
-**URL da API:** __AZURE_URL__
+**URL da API:** https://tonodireito-api-9dd995.azurewebsites.net
 
 Toda a infraestrutura é criada pelo script [`azure/deploy.sh`](azure/deploy.sh), executado no **Azure Cloud Shell**:
 ```bash
-curl -sL https://raw.githubusercontent.com/Enzo-Miletta/to-no-direito-api/main/azure/deploy.sh | bash -s -- <usuario-dockerhub>
+curl -sL https://raw.githubusercontent.com/Daraujof/Global-Solution-Microservice-and-Web-Engineering-IT-Services/main/azure/deploy.sh | bash -s -- <usuario-dockerhub>
 ```
 Para atualizar a aplicação após um novo push (nova imagem `latest`): `az webapp restart -g rg-tonodireito -n <nome-do-app>`.
 
@@ -186,7 +186,7 @@ Para atualizar a aplicação após um novo push (nova imagem `latest`): `az weba
 
 **Pelo terminal (roteiro completo de CRUD):**
 ```bash
-bash scripts/teste-api.sh __AZURE_URL__
+bash scripts/teste-api.sh https://tonodireito-api-9dd995.azurewebsites.net
 ```
 
 **Persistência no SQL Server:** os dados criados continuam disponíveis após reiniciar o container (`az webapp restart ...`) e podem ser consultados no *Query editor* do banco `tonodireito` no portal do Azure:
